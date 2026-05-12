@@ -1,0 +1,79 @@
+[
+  {
+    "name": "Quiz Lead Scoring",
+    "trigger": {
+      "type": "tag_applied",
+      "tag": "quiz-taken"
+    },
+    "action": {
+      "type": "add_score",
+      "points": 10
+    }
+  },
+  {
+    "name": "Email Engagement",
+    "trigger": {
+      "type": "email_opened"
+    },
+    "condition": {
+      "has_tag": "quiz-taken"
+    },
+    "action": {
+      "type": "apply_tag",
+      "tag": "quiz-engaged"
+    }
+  },
+  {
+    "name": "Hot Lead Detection",
+    "trigger": {
+      "type": "link_clicked",
+      "url_contains": "calendly"
+    },
+    "condition": {
+      "has_tag": "quiz-taken"
+    },
+    "actions": [
+      {
+        "type": "apply_tag",
+        "tag": "quiz-lead-hot"
+      },
+      {
+        "type": "add_score",
+        "points": 20
+      }
+    ]
+  },
+  {
+    "name": "Start Discovery Fracture Sequence",
+    "trigger": {
+      "type": "tag_applied",
+      "tag": "fracture-discovery"
+    },
+    "action": {
+      "type": "start_sequence",
+      "sequence": "Discovery Fracture Nurture"
+    }
+  },
+  {
+    "name": "Start Objection Fracture Sequence",
+    "trigger": {
+      "type": "tag_applied",
+      "tag": "fracture-objection"
+    },
+    "action": {
+      "type": "start_sequence",
+      "sequence": "Objection Fracture Nurture"
+    }
+  },
+  {
+    "name": "Start Follow-up Fracture Sequence",
+    "trigger": {
+      "type": "tag_applied",
+      "tag": "fracture-followup"
+    },
+    "action": {
+      "type": "start_sequence",
+      "sequence": "Follow-up Fracture Nurture"
+    }
+  }
+]

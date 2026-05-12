@@ -1,0 +1,146 @@
+[
+  {
+    "name": "Discovery Fracture Nurture",
+    "trigger_tag": "fracture-discovery",
+    "emails": [
+      {
+        "order": 1,
+        "delay_hours": 0,
+        "subject": "Your Discovery Fracture \u2014 what it means",
+        "body": "Email 1 content for Discovery Fracture"
+      },
+      {
+        "order": 2,
+        "delay_hours": 24,
+        "subject": "Why most people struggle with discovery fracture",
+        "body": "Email 2 content for Discovery Fracture"
+      },
+      {
+        "order": 3,
+        "delay_hours": 48,
+        "subject": "Case study: Fixing the Discovery Fracture",
+        "body": "Email 3 content for Discovery Fracture"
+      },
+      {
+        "order": 4,
+        "delay_hours": 72,
+        "subject": "The 3-step discovery fracture fix",
+        "body": "Email 4 content for Discovery Fracture"
+      },
+      {
+        "order": 5,
+        "delay_hours": 120,
+        "subject": "Common discovery fracture mistakes",
+        "body": "Email 5 content for Discovery Fracture"
+      },
+      {
+        "order": 6,
+        "delay_hours": 168,
+        "subject": "Ready to fix your discovery fracture?",
+        "body": "Email 6 content for Discovery Fracture"
+      },
+      {
+        "order": 7,
+        "delay_hours": 240,
+        "subject": "Last chance: 3 spots remaining",
+        "body": "Email 7 content for Discovery Fracture"
+      }
+    ]
+  },
+  {
+    "name": "Objection Fracture Nurture",
+    "trigger_tag": "fracture-objection",
+    "emails": [
+      {
+        "order": 1,
+        "delay_hours": 0,
+        "subject": "Your Objection Fracture \u2014 what it means",
+        "body": "Email 1 content for Objection Fracture"
+      },
+      {
+        "order": 2,
+        "delay_hours": 24,
+        "subject": "Why most people struggle with objection fracture",
+        "body": "Email 2 content for Objection Fracture"
+      },
+      {
+        "order": 3,
+        "delay_hours": 48,
+        "subject": "Case study: Fixing the Objection Fracture",
+        "body": "Email 3 content for Objection Fracture"
+      },
+      {
+        "order": 4,
+        "delay_hours": 72,
+        "subject": "The 3-step objection fracture fix",
+        "body": "Email 4 content for Objection Fracture"
+      },
+      {
+        "order": 5,
+        "delay_hours": 120,
+        "subject": "Common objection fracture mistakes",
+        "body": "Email 5 content for Objection Fracture"
+      },
+      {
+        "order": 6,
+        "delay_hours": 168,
+        "subject": "Ready to fix your objection fracture?",
+        "body": "Email 6 content for Objection Fracture"
+      },
+      {
+        "order": 7,
+        "delay_hours": 240,
+        "subject": "Last chance: 3 spots remaining",
+        "body": "Email 7 content for Objection Fracture"
+      }
+    ]
+  },
+  {
+    "name": "Follow-up Fracture Nurture",
+    "trigger_tag": "fracture-followup",
+    "emails": [
+      {
+        "order": 1,
+        "delay_hours": 0,
+        "subject": "Your Follow-up Fracture \u2014 what it means",
+        "body": "Email 1 content for Follow-up Fracture"
+      },
+      {
+        "order": 2,
+        "delay_hours": 24,
+        "subject": "Why most people struggle with follow-up fracture",
+        "body": "Email 2 content for Follow-up Fracture"
+      },
+      {
+        "order": 3,
+        "delay_hours": 48,
+        "subject": "Case study: Fixing the Follow-up Fracture",
+        "body": "Email 3 content for Follow-up Fracture"
+      },
+      {
+        "order": 4,
+        "delay_hours": 72,
+        "subject": "The 3-step follow-up fracture fix",
+        "body": "Email 4 content for Follow-up Fracture"
+      },
+      {
+        "order": 5,
+        "delay_hours": 120,
+        "subject": "Common follow-up fracture mistakes",
+        "body": "Email 5 content for Follow-up Fracture"
+      },
+      {
+        "order": 6,
+        "delay_hours": 168,
+        "subject": "Ready to fix your follow-up fracture?",
+        "body": "Email 6 content for Follow-up Fracture"
+      },
+      {
+        "order": 7,
+        "delay_hours": 240,
+        "subject": "Last chance: 3 spots remaining",
+        "body": "Email 7 content for Follow-up Fracture"
+      }
+    ]
+  }
+]

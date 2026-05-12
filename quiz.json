@@ -1,0 +1,109 @@
+{
+  "title": "Find Your Sales Conversion Fracture",
+  "psychology": {
+    "pain": [
+      "empty pipeline",
+      "price resistance"
+    ],
+    "desire": [
+      "fully booked",
+      "thought leadership"
+    ],
+    "tone": "inspirational",
+    "lead_timing": "after_result"
+  },
+  "fractures": [
+    {
+      "name": "Discovery Fracture",
+      "slug": "fracture-discovery",
+      "symptoms": [
+        "Rushing to pitch",
+        "Not understanding pain",
+        "One-call closes failing"
+      ]
+    },
+    {
+      "name": "Objection Fracture",
+      "slug": "fracture-objection",
+      "symptoms": [
+        "Price resistance",
+        "Need to think about it",
+        "Ghosting after calls"
+      ]
+    },
+    {
+      "name": "Follow-up Fracture",
+      "slug": "fracture-followup",
+      "symptoms": [
+        "Leads going cold",
+        "No system",
+        "Inconsistent outreach"
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "order": 1,
+      "question": "What's your biggest challenge with sales conversion?",
+      "options": [
+        {
+          "value": "A",
+          "text": "Rushing to pitch",
+          "fracture": "fracture-discovery"
+        },
+        {
+          "value": "B",
+          "text": "Price resistance",
+          "fracture": "fracture-objection"
+        },
+        {
+          "value": "C",
+          "text": "Leads going cold",
+          "fracture": "fracture-followup"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "question": "What else are you experiencing?",
+      "options": [
+        {
+          "value": "A",
+          "text": "Not understanding pain",
+          "fracture": "fracture-discovery"
+        },
+        {
+          "value": "B",
+          "text": "Need to think about it",
+          "fracture": "fracture-objection"
+        },
+        {
+          "value": "C",
+          "text": "No system",
+          "fracture": "fracture-followup"
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "question": "What's this costing you?",
+      "options": [
+        {
+          "value": "A",
+          "text": "empty pipeline - direct loss",
+          "fracture": "fracture-discovery"
+        },
+        {
+          "value": "B",
+          "text": "price resistance - opportunity cost",
+          "fracture": "fracture-objection"
+        },
+        {
+          "value": "C",
+          "text": "Confidence and momentum",
+          "fracture": "fracture-followup"
+        }
+      ]
+    }
+  ]
+}
