@@ -135,18 +135,30 @@
             <div class="option" data-value="C" data-fracture="fracture-followup">No system</div>
         </div>
         <div class="question" data-q="3">
-            <h3>Q3: What's this costing you?</h3>
-            <div class="option" data-value="A" data-fracture="fracture-discovery">empty pipeline - direct loss</div>
-            <div class="option" data-value="B" data-fracture="fracture-objection">price resistance - opportunity cost</div>
-            <div class="option" data-value="C" data-fracture="fracture-followup">Confidence and momentum</div>
+            <h3>Q3: What's this costing you right now?</h3>
+            <div class="option" data-value="A" data-fracture="fracture-discovery">empty pipeline - direct revenue loss</div>
+            <div class="option" data-value="B" data-fracture="fracture-objection">price resistance - missed opportunities</div>
+            <div class="option" data-value="C" data-fracture="fracture-followup">Sleepless nights and stress</div>
         </div>
         <div class="question" data-q="4">
+            <h3>Q4: What have you already tried?</h3>
+            <div class="option" data-value="A" data-fracture="fracture-discovery">Courses and templates - still rushing to pitch</div>
+            <div class="option" data-value="B" data-fracture="fracture-objection">Hiring help - still price resistance</div>
+            <div class="option" data-value="C" data-fracture="fracture-followup">Doing it myself - still leads going cold</div>
+        </div>
+        <div class="question" data-q="5">
+            <h3>Q5: If this continues for 6 months, what happens?</h3>
+            <div class="option" data-value="A" data-fracture="fracture-discovery">I'll have to get a job or close down</div>
+            <div class="option" data-value="B" data-fracture="fracture-objection">I'll burn out and quit</div>
+            <div class="option" data-value="C" data-fracture="fracture-followup">I'll miss my goals again</div>
+        </div>
+        <div class="question" data-q="6">
             <h3>What's your first name?</h3>
             <input type="text" id="name" placeholder="First name">
             <button onclick="nextQuestion()">Continue</button>
         </div>
-        <div class="question" data-q="5">
-            <h3>Where should I send your result?</h3>
+        <div class="question" data-q="7">
+            <h3>Where should I send your personalized result?</h3>
             <input type="email" id="email" placeholder="your@email.com">
             <button onclick="showResult()">Get My Result</button>
         </div>
@@ -252,7 +264,7 @@ async function sendLeadToGlobalControl(leadData) {
 // Quiz Logic
 let answers = {};
 let currentQuestion = 1;
-const totalQuestions = 5;
+const totalQuestions = 7;
 
 function updateProgress() {
     const progress = ((currentQuestion - 1) / totalQuestions) * 100;
