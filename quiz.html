@@ -38,17 +38,8 @@
             transition: width 0.3s;
         }
         .question { display: none; }
-        .question.active { display: block; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .question.active { display: block; }
         .question h3 { font-size: 20px; margin-bottom: 20px; color: #2c3e50; }
-        .tier-label {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #667eea;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
         .option { 
             display: block;
             padding: 16px;
@@ -56,13 +47,11 @@
             background: #f8f9fa;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s;
             border: 2px solid transparent;
         }
         .option:hover { 
             background: #e9ecef;
             border-color: #667eea;
-            transform: translateX(5px);
         }
         input { 
             width: 100%; 
@@ -72,7 +61,6 @@
             border-radius: 8px;
             font-size: 16px;
         }
-        input:focus { border-color: #667eea; outline: none; }
         button {
             width: 100%;
             padding: 16px;
@@ -88,8 +76,6 @@
         button:hover { background: #5a6fd6; }
         .result { display: none; padding: 30px; background: #f8f9fa; border-radius: 12px; margin-top: 20px; }
         .result.active { display: block; }
-        .result h2 { color: #2c3e50; margin-bottom: 15px; }
-        .score-display { font-size: 48px; color: #667eea; text-align: center; margin: 20px 0; }
         .cta-button {
             display: block;
             padding: 18px;
@@ -102,391 +88,280 @@
             font-weight: bold;
             margin-top: 20px;
         }
-        .disclaimer { text-align: center; margin-top: 30px; color: #999; font-size: 14px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>The Sales Conversion Diagnostic</h1>
-            <p class="subtitle">10 questions. 3 minutes. Personalized assessment.</p>
-        </div>
+        <h1>The Sales Conversion Diagnostic</h1>
+        <p class="subtitle">10 questions. 3 minutes. Personalized assessment.</p>
         
         <div class="progress-bar">
             <div class="progress-fill" id="progress"></div>
         </div>
         
-        <div id="quiz-container">
-            <!-- Tier 1: Pattern Interrupt -->
-            <div class="question active" data-q="1" data-tier="1">
-                <div class="tier-label">Question 1 of 10</div>
-                <h3>What's your biggest challenge with sales conversion?</h3>
-                <div class="option" data-value="A" data-fracture="fracture-discovery" data-score="0">Rushing to pitch without understanding pain</div>
-                <div class="option" data-value="B" data-fracture="fracture-objection" data-score="0">Price resistance on every call</div>
-                <div class="option" data-value="C" data-fracture="fracture-followup" data-score="0">Leads going cold after first contact</div>
-            </div>
-            
-            <div class="question" data-q="2" data-tier="1">
-                <div class="tier-label">Question 2 of 10</div>
-                <h3>How long have you been dealing with this?</h3>
-                <div class="option" data-value="A" data-score="2">Less than 6 months</div>
-                <div class="option" data-value="B" data-score="5">6-12 months</div>
-                <div class="option" data-value="C" data-score="8">Over a year</div>
-            </div>
-            
-            <!-- Tier 2: Pain Intensification -->
-            <div class="question" data-q="3" data-tier="2">
-                <div class="tier-label">Question 3 of 10</div>
-                <h3>What's this costing you monthly in lost revenue?</h3>
-                <div class="option" data-value="A" data-score="2">Under $1,000</div>
-                <div class="option" data-value="B" data-score="5">$1,000 - $5,000</div>
-                <div class="option" data-value="C" data-score="10">Over $5,000</div>
-            </div>
-            
-            <div class="question" data-q="4" data-tier="2">
-                <div class="tier-label">Question 4 of 10</div>
-                <h3>What have you already tried to fix this?</h3>
-                <div class="option" data-value="A" data-score="3">Free content and DIY</div>
-                <div class="option" data-value="B" data-score="5">Courses and templates</div>
-                <div class="option" data-value="C" data-score="8">Hired help - still stuck</div>
-            </div>
-            
-            <div class="question" data-q="5" data-tier="2">
-                <div class="tier-label">Question 5 of 10</div>
-                <h3>If nothing changes in 6 months, what happens?</h3>
-                <div class="option" data-value="A" data-score="2">I'll figure it out eventually</div>
-                <div class="option" data-value="B" data-score="5">I'll have to make major changes</div>
-                <div class="option" data-value="C" data-score="10">Business/personal disaster</div>
-            </div>
-            
-            <!-- Tier 3: Commitment Checkpoint -->
-            <div class="question" data-q="6" data-tier="3">
-                <div class="tier-label">Checkpoint</div>
-                <h3>Are you ready to invest time and money to fix this in the next 30 days?</h3>
-                <div class="option" data-value="committed" data-action="continue" data-score="15">Yes, I'm committed</div>
-                <div class="option" data-value="exploring" data-action="nurture" data-score="5">Maybe, still exploring</div>
-                <div class="option" data-value="curious" data-action="content" data-score="0">No, just curious</div>
-            </div>
-            
-            <!-- Tier 4: Qualification (only for committed) -->
-            <div class="question" data-q="7" data-tier="4">
-                <div class="tier-label">Question 7 of 10</div>
-                <h3>What's your current monthly revenue?</h3>
-                <div class="option" data-value="low" data-tag="cold">Under $5,000</div>
-                <div class="option" data-value="medium" data-tag="warm">$5,000 - $20,000</div>
-                <div class="option" data-value="high" data-tag="hot">Over $20,000</div>
-            </div>
-            
-            <div class="question" data-q="8" data-tier="4">
-                <div class="tier-label">Question 8 of 10</div>
-                <h3>What's your comfort level for investment in solving this?</h3>
-                <div class="option" data-value="low" data-tag="cold">Under $1,000</div>
-                <div class="option" data-value="medium" data-tag="warm">$1,000 - $5,000</div>
-                <div class="option" data-value="high" data-tag="hot">$5,000+</div>
-            </div>
-            
-            <!-- Tier 5: Identity Capture -->
-            <div class="question" data-q="9" data-tier="5">
-                <div class="tier-label">Almost there</div>
-                <h3>What's your first name?</h3>
-                <input type="text" id="name" placeholder="First name">
-                <button onclick="nextQuestion()">Continue</button>
-            </div>
-            
-            <div class="question" data-q="10" data-tier="5">
-                <div class="tier-label">Final step</div>
-                <h3>What's your best email for your personalized diagnostic?</h3>
-                <input type="email" id="email" placeholder="your@email.com">
-                <button onclick="showResult()">Get My Result</button>
-            </div>
-        </div>
-        
-        <!-- Results -->
-        <div id="result-hot" class="result">
-            <h2>🔥 Hot Lead - Priority Follow-up</h2>
-            <div class="score-display" id="score-hot"></div>
-            <p>Your diagnostic shows high intent and readiness. You qualify for a direct strategy call.</p>
-            <a href="https://calendly.com/reyescastillo/sales-diagnostic" class="cta-button">Book Your Strategy Call - $3,497</a>
-        </div>
-        
-        <div id="result-warm" class="result">
-            <h2>⚡ Warm Lead - Nurture Sequence</h2>
-            <div class="score-display" id="score-warm"></div>
-            <p>You're interested but need more information. Check your email for valuable resources.</p>
-        </div>
-        
-        <div id="result-cold" class="result">
-            <h2>📚 Content Recommendation</h2>
-            <p>Based on your responses, here are some free resources to help you get started.</p>
-        </div>
-        
-        <div id="result-nurture" class="result">
-            <h2>📧 Stay Connected</h2>
-            <p>Thanks for your interest! You'll receive valuable content to help with your challenges.</p>
-        </div>
-        
-        <div id="result-content" class="result">
-            <h2>📖 Free Resources</h2>
-            <p>Here are some articles that might help you understand your challenges better.</p>
-        </div>
-        
-        <div class="disclaimer">
-            Built by Reyes Castillo | Sales Conversion System
-        </div>
+        <div id="quiz-container"></div>
+        <div id="result-container"></div>
     </div>
-    
+
     <script>
-// Lead Capture System
-const LEAD_CONFIG = {
-    // Webhook URL - Replace with your Zapier/Make.com webhook
-    webhookUrl: '',
-    
-    // Email notification - Replace with your email
-    notificationEmail: 'reyes@agentmail.to',
-    
-    // Local storage key
-    storageKey: 'quiz_leads'
+// Quiz Data
+const quizData = {
+    questions: [
+        {
+            id: 1,
+            text: "What's your biggest challenge with sales conversion?",
+            options: [
+                { text: "Rushing to pitch without understanding pain", value: "discovery", score: 0 },
+                { text: "Price resistance on every call", value: "objection", score: 0 },
+                { text: "Leads going cold after first contact", value: "followup", score: 0 }
+            ]
+        },
+        {
+            id: 2,
+            text: "How long have you been dealing with this?",
+            options: [
+                { text: "Less than 6 months", value: "short", score: 2 },
+                { text: "6-12 months", value: "medium", score: 5 },
+                { text: "Over a year", value: "long", score: 8 }
+            ]
+        },
+        {
+            id: 3,
+            text: "What's this costing you monthly in lost revenue?",
+            options: [
+                { text: "Under $1,000", value: "low", score: 2 },
+                { text: "$1,000 - $5,000", value: "mid", score: 5 },
+                { text: "Over $5,000", value: "high", score: 10 }
+            ]
+        },
+        {
+            id: 4,
+            text: "What have you already tried to fix this?",
+            options: [
+                { text: "Free content and DIY", value: "diy", score: 3 },
+                { text: "Courses and templates", value: "courses", score: 5 },
+                { text: "Hired help - still stuck", value: "hired", score: 8 }
+            ]
+        },
+        {
+            id: 5,
+            text: "If nothing changes in 6 months, what happens?",
+            options: [
+                { text: "I'll figure it out eventually", value: "optimistic", score: 2 },
+                { text: "I'll have to make major changes", value: "realistic", score: 5 },
+                { text: "Business/personal disaster", value: "urgent", score: 10 }
+            ]
+        },
+        {
+            id: 6,
+            text: "Are you ready to invest time and money to fix this in the next 30 days?",
+            options: [
+                { text: "Yes, I'm committed", value: "committed", score: 15, action: "continue" },
+                { text: "Maybe, still exploring", value: "maybe", score: 5, action: "nurture" },
+                { text: "No, just curious", value: "no", score: 0, action: "content" }
+            ]
+        },
+        {
+            id: 7,
+            text: "What's your current monthly revenue?",
+            options: [
+                { text: "Under $5,000", value: "under5k", score: 0 },
+                { text: "$5,000 - $20,000", value: "5to20k", score: 5 },
+                { text: "Over $20,000", value: "over20k", score: 10 }
+            ]
+        },
+        {
+            id: 8,
+            text: "What's your comfort level for investment in solving this?",
+            options: [
+                { text: "Under $1,000", value: "under1k", score: 0 },
+                { text: "$1,000 - $5,000", value: "1to5k", score: 5 },
+                { text: "$5,000+", value: "over5k", score: 10 }
+            ]
+        },
+        {
+            id: 9,
+            text: "What's your first name?",
+            type: "input",
+            field: "name",
+            placeholder: "First name"
+        },
+        {
+            id: 10,
+            text: "What's your best email for your personalized diagnostic?",
+            type: "input",
+            field: "email",
+            placeholder: "your@email.com"
+        }
+    ]
 };
 
-async function sendLead(leadData) {
-    const { name, email, resultId, score } = leadData;
-    const [firstName, ...lastParts] = name.split(' ');
-    
-    const payload = {
-        email: email,
-        first_name: firstName,
-        last_name: lastParts.join(' ') || '',
-        result: resultId,
-        score: score,
-        quiz_name: 'sales_conversion_diagnostic',
-        date: new Date().toISOString(),
-        source: window.location.href
-    };
-    
-    // Always store locally first
-    storeLeadLocally(payload);
-    
-    // Try webhook if configured
-    if (LEAD_CONFIG.webhookUrl) {
-        try {
-            const response = await fetch(LEAD_CONFIG.webhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            
-            if (response.ok) {
-                console.log('✓ Lead sent to webhook');
-                markLeadAsSynced(email);
-            }
-        } catch(error) {
-            console.error('Webhook failed:', error);
-        }
-    }
-    
-    // Try email notification
-    if (LEAD_CONFIG.notificationEmail) {
-        sendEmailNotification(payload);
-    }
-    
-    return { success: true, stored: true };
+// State
+let currentQuestion = 0;
+let answers = [];
+let totalScore = 0;
+let userAction = 'continue';
+
+// Initialize
+function init() {
+    renderQuestion();
+    updateProgress();
 }
 
-function storeLeadLocally(leadData) {
-    const leads = JSON.parse(localStorage.getItem(LEAD_CONFIG.storageKey) || '[]');
-    leads.push({
-        ...leadData,
-        synced: false,
-        stored_at: new Date().toISOString()
-    });
-    localStorage.setItem(LEAD_CONFIG.storageKey, JSON.stringify(leads));
-    console.log('✓ Lead stored locally');
-}
-
-function markLeadAsSynced(email) {
-    const leads = JSON.parse(localStorage.getItem(LEAD_CONFIG.storageKey) || '[]');
-    const updated = leads.map(lead => {
-        if (lead.email === email) {
-            return { ...lead, synced: true, synced_at: new Date().toISOString() };
-        }
-        return lead;
-    });
-    localStorage.setItem(LEAD_CONFIG.storageKey, JSON.stringify(updated));
-}
-
-function sendEmailNotification(leadData) {
-    const subject = `New Quiz Lead: ${leadData.first_name} ${leadData.last_name}`;
-    const body = `
-New lead from Sales Conversion Diagnostic:
-
-Name: ${leadData.first_name} ${leadData.last_name}
-Email: ${leadData.email}
-Result: ${leadData.result}
-Score: ${leadData.score}
-Date: ${leadData.date}
-
-View all leads: ${window.location.origin}/leads.html
-    `.trim();
+// Render current question
+function renderQuestion() {
+    const container = document.getElementById('quiz-container');
+    const question = quizData.questions[currentQuestion];
     
-    console.log('Email notification prepared:', subject);
-}
-
-// Export leads functionality
-function exportLeads() {
-    const leads = JSON.parse(localStorage.getItem(LEAD_CONFIG.storageKey) || '[]');
-    
-    if (leads.length === 0) {
-        alert('No leads to export');
+    if (!question) {
+        showResult();
         return;
     }
     
-    const headers = ['Email', 'First Name', 'Last Name', 'Result', 'Score', 'Date', 'Synced'];
-    const rows = leads.map(lead => [
-        lead.email,
-        lead.first_name,
-        lead.last_name,
-        lead.result,
-        lead.score,
-        lead.date,
-        lead.synced ? 'Yes' : 'No'
-    ]);
+    let html = `<div class="question active" id="q${question.id}">`;
+    html += `<h3>Q${currentQuestion + 1}: ${question.text}</h3>`;
     
-    const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    if (question.type === 'input') {
+        html += `<input type="${question.field === 'email' ? 'email' : 'text'}" id="${question.field}" placeholder="${question.placeholder}">`;
+        html += `<button onclick="handleInput()">${question.field === 'email' ? 'Get My Result' : 'Continue'}</button>`;
+    } else {
+        question.options.forEach((opt, idx) => {
+            html += `<div class="option" onclick="handleOption(${idx})">${opt.text}</div>`;
+        });
+    }
     
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `quiz-leads-${new Date().toISOString().split('T')[0]}.csv`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-    
-    console.log(`Exported ${leads.length} leads`);
+    html += '</div>';
+    container.innerHTML = html;
 }
 
-// Quiz Logic
-let answers = {};
-let scores = {};
-let currentQuestion = 1;
-const totalQuestions = 10;
-let userAction = 'continue'; // continue, nurture, content
-
-function updateProgress() {
-    const progress = ((currentQuestion - 1) / totalQuestions) * 100;
-    document.getElementById('progress').style.width = progress + '%';
+// Handle option click
+function handleOption(optionIndex) {
+    const question = quizData.questions[currentQuestion];
+    const option = question.options[optionIndex];
+    
+    answers.push({
+        question: question.id,
+        answer: option.value,
+        score: option.score || 0
+    });
+    
+    if (option.score) totalScore += option.score;
+    if (option.action) userAction = option.action;
+    
+    console.log('Selected:', option.value, 'Score:', option.score, 'Action:', option.action);
+    
+    // Handle early exit for non-committed users
+    if (option.action === 'content' || option.action === 'nurture') {
+        showResult();
+        return;
+    }
+    
+    currentQuestion++;
+    renderQuestion();
+    updateProgress();
 }
 
-function showQuestion(num) {
-    document.querySelectorAll('.question').forEach(q => q.classList.remove('active'));
-    const question = document.querySelector(`[data-q="${num}"]`);
-    if (question) {
-        question.classList.add('active');
+// Handle input fields
+function handleInput() {
+    const question = quizData.questions[currentQuestion];
+    const input = document.getElementById(question.field);
+    
+    if (!input || !input.value.trim()) return;
+    
+    answers.push({
+        question: question.id,
+        answer: input.value,
+        field: question.field
+    });
+    
+    if (question.field === 'email') {
+        showResult();
+    } else {
+        currentQuestion++;
+        renderQuestion();
         updateProgress();
     }
 }
 
-function nextQuestion() {
-    const nameInput = document.getElementById('name');
-    if (nameInput && nameInput.value.trim()) {
-        currentQuestion++;
-        showQuestion(currentQuestion);
-    }
+// Update progress bar
+function updateProgress() {
+    const progress = ((currentQuestion) / quizData.questions.length) * 100;
+    document.getElementById('progress').style.width = progress + '%';
 }
 
+// Show result
 function showResult() {
-    const emailInput = document.getElementById('email');
-    if (!emailInput || !emailInput.value.trim()) return;
-    
-    // Hide all questions
-    document.querySelectorAll('.question').forEach(q => q.classList.remove('active'));
+    document.getElementById('quiz-container').style.display = 'none';
     document.getElementById('progress').style.width = '100%';
     
-    // Calculate total score
-    let totalScore = Object.values(scores).reduce((a, b) => a + b, 0);
+    let resultType = '';
+    let resultTitle = '';
+    let resultText = '';
     
-    // Determine result based on action and score
-    let resultId = '';
     if (userAction === 'content') {
-        resultId = 'result-content';
+        resultType = 'content';
+        resultTitle = '📖 Free Resources';
+        resultText = 'Here are some articles that might help you understand your challenges better.';
     } else if (userAction === 'nurture') {
-        resultId = 'result-nurture';
+        resultType = 'nurture';
+        resultTitle = '📧 Stay Connected';
+        resultText = "Thanks for your interest! You'll receive valuable content to help with your challenges.";
     } else if (totalScore >= 25) {
-        resultId = 'result-hot';
-        document.getElementById('score-hot').textContent = totalScore + ' points';
+        resultType = 'hot';
+        resultTitle = '🔥 Hot Lead - Priority Follow-up';
+        resultText = 'Your diagnostic shows high intent and readiness. You qualify for a direct strategy call.';
     } else if (totalScore >= 15) {
-        resultId = 'result-warm';
-        document.getElementById('score-warm').textContent = totalScore + ' points';
+        resultType = 'warm';
+        resultTitle = '⚡ Warm Lead - Nurture Sequence';
+        resultText = "You're interested but need more information. Check your email for valuable resources.";
     } else {
-        resultId = 'result-cold';
+        resultType = 'cold';
+        resultTitle = '📚 Content Recommendation';
+        resultText = 'Based on your responses, here are some free resources to help you get started.';
     }
     
-    // Show result
-    const resultDiv = document.getElementById(resultId);
-    if (resultDiv) {
-        resultDiv.classList.add('active');
+    const container = document.getElementById('result-container');
+    let html = `<div class="result active">`;
+    html += `<h2>${resultTitle}</h2>`;
+    html += `<p>Score: ${totalScore} points</p>`;
+    html += `<p>${resultText}</p>`;
+    
+    if (resultType === 'hot') {
+        html += `<a href="https://calendly.com/reyescastillo/sales-diagnostic" class="cta-button">Book Your Strategy Call - $3,497</a>`;
     }
     
-    // Send lead
-    const nameInput = document.getElementById('name');
-    const emailInput = document.getElementById('email');
-    if (emailInput && emailInput.value.trim()) {
-        sendLead({
-            name: nameInput.value,
-            email: emailInput.value,
-            resultId: resultId,
-            score: totalScore
-        });
-    }
+    html += `</div>`;
+    container.innerHTML = html;
     
-    console.log('Quiz completed:', { score: totalScore, action: userAction, result: resultId });
+    // Store lead
+    storeLead(resultType);
 }
 
-// Event listeners - attach to document for dynamic elements
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('option')) {
-        const option = e.target;
-        const question = option.closest('.question');
-        
-        if (!question) {
-            console.error('Could not find parent question');
-            return;
-        }
-        
-        const qNum = parseInt(question.getAttribute('data-q'));
-        const value = option.getAttribute('data-value');
-        const score = parseInt(option.getAttribute('data-score') || 0);
-        const action = option.getAttribute('data-action');
-        
-        console.log('Clicked option:', { qNum, value, score, action });
-        
-        // Store answer and score
-        answers[qNum] = value;
-        if (score) scores[qNum] = score;
-        
-        // Handle checkpoint action
-        if (action) {
-            userAction = action;
-            if (action === 'content' || action === 'nurture') {
-                // Skip to result for non-committed users
-                showResult();
-                return;
-            }
-        }
-        
-        // Progress to next question
-        if (currentQuestion < totalQuestions) {
-            currentQuestion++;
-            showQuestion(currentQuestion);
-        } else {
-            showResult();
-        }
-    }
-});
+// Store lead locally
+function storeLead(resultType) {
+    const nameInput = answers.find(a => a.field === 'name');
+    const emailInput = answers.find(a => a.field === 'email');
+    
+    if (!emailInput) return;
+    
+    const lead = {
+        name: nameInput ? nameInput.answer : 'Anonymous',
+        email: emailInput.answer,
+        result: resultType,
+        score: totalScore,
+        answers: answers,
+        date: new Date().toISOString()
+    };
+    
+    const leads = JSON.parse(localStorage.getItem('quiz_leads') || '[]');
+    leads.push(lead);
+    localStorage.setItem('quiz_leads', JSON.stringify(leads));
+    
+    console.log('Lead stored:', lead);
+}
 
-// Initialize
-showQuestion(1);
+// Start
+init();
     </script>
 </body>
 </html>
