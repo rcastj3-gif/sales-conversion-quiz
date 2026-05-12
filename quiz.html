@@ -317,6 +317,9 @@ document.querySelectorAll('.option').forEach(option => {
         if (currentQuestion < totalQuestions) {
             currentQuestion++;
             showQuestion(currentQuestion);
+        } else {
+            // Last question answered - show result
+            showResult();
         }
     });
 });
