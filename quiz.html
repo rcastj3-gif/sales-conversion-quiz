@@ -333,8 +333,8 @@ function showResult() {
     html += `</div>`;
     container.innerHTML = html;
     
-    // Store lead
-    storeLead(resultType);
+    // Store lead (async)
+    storeLead(resultType).catch(err => console.error('Store lead error:', err));
 }
 
 // GlobalControl Integration
