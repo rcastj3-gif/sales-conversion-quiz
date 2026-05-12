@@ -342,7 +342,11 @@ function storeLead(resultType) {
     const nameInput = answers.find(a => a.field === 'name');
     const emailInput = answers.find(a => a.field === 'email');
     
-    if (!emailInput) return;
+    // Only store if we have email
+    if (!emailInput || !emailInput.answer) {
+        console.log('No email captured - lead not stored');
+        return;
+    }
     
     const lead = {
         name: nameInput ? nameInput.answer : 'Anonymous',
@@ -357,7 +361,49 @@ function storeLead(resultType) {
     leads.push(lead);
     localStorage.setItem('quiz_leads', JSON.stringify(leads));
     
-    console.log('Lead stored:', lead);
+    console.log('✓ Lead stored locally:', lead);
+    
+    // Show confirmation to user
+    showStorageConfirmation();
+}
+
+function showStorageConfirmation() {
+    const container = document.getElementById('result-container');
+    const confirmation = document.createElement('div');
+    confirmation.style.cssText = 'margin-top: 20px; padding: 15px; background: #d4edda; border-radius: 8px; color: #155724;';
+    confirmation.innerHTML = '✓ Your result has been saved. Check your email for next steps.';
+    container.appendChild(confirmation);
+}
+
+// Admin function to view leads (type viewLeads() in console)
+function viewLeads() {
+    const leads = JSON.parse(localStorage.getItem('quiz_leads') || '[]');
+    console.table(leads);
+    return leads;
+}
+
+function exportLeads() {
+    const leads = JSON.parse(localStorage.getItem('quiz_leads') || '[]');
+    if (leads.length === 0) {
+        console.log('No leads to export');
+        return;
+    }
+    
+    const headers = ['Name', 'Email', 'Result', 'Score', 'Date'];
+    const rows = leads.map(l => [l.name, l.email, l.result, l.score, l.date]);
+    const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `quiz-leads-${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+    
+    console.log(`Exported ${leads.length} leads`);
 }
 
 // Start
