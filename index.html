@@ -337,14 +337,55 @@ function showResult() {
     storeLead(resultType);
 }
 
-// Store lead locally
-function storeLead(resultType) {
+// GlobalControl Integration
+const GC_CONFIG = {
+    apiKey: '732716848f927cfaf4399bc92e4ecdd3dac1a020a92cf366fb26d3ae7f990825',
+    apiUrl: 'https://app.globalcontrol.com/api/v1'
+};
+
+async function sendToGlobalControl(leadData) {
+    const payload = {
+        email: leadData.email,
+        first_name: leadData.name.split(' ')[0],
+        last_name: leadData.name.split(' ').slice(1).join(' ') || '',
+        tags: ['quiz-taken', `result-${leadData.result}`, 'sales-conversion-quiz'],
+        custom_fields: {
+            quiz_result: leadData.result,
+            quiz_score: leadData.score,
+            quiz_date: leadData.date
+        }
+    };
+    
+    try {
+        const response = await fetch(`${GC_CONFIG.apiUrl}/contacts`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${GC_CONFIG.apiKey}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+        
+        if (response.ok) {
+            console.log('✓ Lead sent to GlobalControl');
+            return true;
+        } else {
+            console.error('GlobalControl error:', response.status);
+            return false;
+        }
+    } catch (error) {
+        console.error('Network error:', error);
+        return false;
+    }
+}
+
+// Store lead locally and send to GlobalControl
+async function storeLead(resultType) {
     const nameInput = answers.find(a => a.field === 'name');
     const emailInput = answers.find(a => a.field === 'email');
     
-    // Only store if we have email
     if (!emailInput || !emailInput.answer) {
-        console.log('No email captured - lead not stored');
+        console.log('No email captured');
         return;
     }
     
@@ -353,25 +394,29 @@ function storeLead(resultType) {
         email: emailInput.answer,
         result: resultType,
         score: totalScore,
-        answers: answers,
         date: new Date().toISOString()
     };
     
+    // Send to GlobalControl
+    const gcSuccess = await sendToGlobalControl(lead);
+    
+    // Also store locally as backup
     const leads = JSON.parse(localStorage.getItem('quiz_leads') || '[]');
-    leads.push(lead);
+    leads.push({...lead, gc_synced: gcSuccess});
     localStorage.setItem('quiz_leads', JSON.stringify(leads));
     
-    console.log('✓ Lead stored locally:', lead);
-    
-    // Show confirmation to user
-    showStorageConfirmation();
+    if (gcSuccess) {
+        showStorageConfirmation('✓ Your result has been saved. Check your email for next steps.');
+    } else {
+        showStorageConfirmation('✓ Result saved. We will follow up shortly.');
+    }
 }
 
-function showStorageConfirmation() {
+function showStorageConfirmation(message) {
     const container = document.getElementById('result-container');
     const confirmation = document.createElement('div');
     confirmation.style.cssText = 'margin-top: 20px; padding: 15px; background: #d4edda; border-radius: 8px; color: #155724;';
-    confirmation.innerHTML = '✓ Your result has been saved. Check your email for next steps.';
+    confirmation.innerHTML = message || '✓ Your result has been saved.';
     container.appendChild(confirmation);
 }
 
