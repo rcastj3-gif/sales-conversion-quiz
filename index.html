@@ -230,20 +230,29 @@
             <p>Here are some articles that might help you understand your challenges better.</p>
         </div>
         
+        <div style="margin-top: 30px; text-align: center;">
+            <button onclick="exportLeads()" style="background: #28a745; font-size: 14px; padding: 10px 20px;">Export All Leads (CSV)</button>
+        </div>
+        
         <div class="disclaimer">
             Built by Reyes Castillo | Sales Conversion System
         </div>
     </div>
     
     <script>
-// GlobalControl Integration
-const GC_CONFIG = {
-    apiKey: '732716848f927cfaf4399bc92e4ecdd3dac1a020a92cf366fb26d3ae7f990825',
-    apiUrl: 'https://app.globalcontrol.com/api/v1',
-    quizName: 'sales_conversion'
+// Lead Capture System
+const LEAD_CONFIG = {
+    // Webhook URL - Replace with your Zapier/Make.com webhook
+    webhookUrl: '',
+    
+    // Email notification - Replace with your email
+    notificationEmail: 'reyes@agentmail.to',
+    
+    // Local storage key
+    storageKey: 'quiz_leads'
 };
 
-async function sendLeadToGlobalControl(leadData) {
+async function sendLead(leadData) {
     const { name, email, resultId, score } = leadData;
     const [firstName, ...lastParts] = name.split(' ');
     
@@ -251,50 +260,114 @@ async function sendLeadToGlobalControl(leadData) {
         email: email,
         first_name: firstName,
         last_name: lastParts.join(' ') || '',
-        tags: ['quiz-taken', resultId, 'quiz-lead-warm'],
-        custom_fields: {
-            quiz_name: GC_CONFIG.quizName,
-            quiz_result: resultId,
-            quiz_score: score,
-            quiz_date: new Date().toISOString()
-        }
+        result: resultId,
+        score: score,
+        quiz_name: 'sales_conversion_diagnostic',
+        date: new Date().toISOString(),
+        source: window.location.href
     };
     
-    try {
-        const response = await fetch(`${GC_CONFIG.apiUrl}/contacts`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${GC_CONFIG.apiKey}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        });
-        
-        if (response.ok) {
-            console.log('✓ Lead sent to GlobalControl');
-            return { success: true };
-        } else {
-            console.error('Failed to send lead:', response.status);
-            // Store locally as fallback
-            storeLeadLocally(payload);
-            return { success: false, stored: true };
+    // Always store locally first
+    storeLeadLocally(payload);
+    
+    // Try webhook if configured
+    if (LEAD_CONFIG.webhookUrl) {
+        try {
+            const response = await fetch(LEAD_CONFIG.webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            
+            if (response.ok) {
+                console.log('✓ Lead sent to webhook');
+                markLeadAsSynced(email);
+            }
+        } catch(error) {
+            console.error('Webhook failed:', error);
         }
-    } catch(error) {
-        console.error('Error:', error);
-        // Store locally as fallback
-        storeLeadLocally(payload);
-        return { success: false, error: error.message, stored: true };
     }
+    
+    // Try email notification
+    if (LEAD_CONFIG.notificationEmail) {
+        sendEmailNotification(payload);
+    }
+    
+    return { success: true, stored: true };
 }
 
 function storeLeadLocally(leadData) {
-    const pending = JSON.parse(localStorage.getItem('gc_pending_leads') || '[]');
-    pending.push({
+    const leads = JSON.parse(localStorage.getItem(LEAD_CONFIG.storageKey) || '[]');
+    leads.push({
         ...leadData,
+        synced: false,
         stored_at: new Date().toISOString()
     });
-    localStorage.setItem('gc_pending_leads', JSON.stringify(pending));
-    console.log('Lead stored locally for later sync');
+    localStorage.setItem(LEAD_CONFIG.storageKey, JSON.stringify(leads));
+    console.log('✓ Lead stored locally');
+}
+
+function markLeadAsSynced(email) {
+    const leads = JSON.parse(localStorage.getItem(LEAD_CONFIG.storageKey) || '[]');
+    const updated = leads.map(lead => {
+        if (lead.email === email) {
+            return { ...lead, synced: true, synced_at: new Date().toISOString() };
+        }
+        return lead;
+    });
+    localStorage.setItem(LEAD_CONFIG.storageKey, JSON.stringify(updated));
+}
+
+function sendEmailNotification(leadData) {
+    const subject = `New Quiz Lead: ${leadData.first_name} ${leadData.last_name}`;
+    const body = `
+New lead from Sales Conversion Diagnostic:
+
+Name: ${leadData.first_name} ${leadData.last_name}
+Email: ${leadData.email}
+Result: ${leadData.result}
+Score: ${leadData.score}
+Date: ${leadData.date}
+
+View all leads: ${window.location.origin}/leads.html
+    `.trim();
+    
+    console.log('Email notification prepared:', subject);
+}
+
+// Export leads functionality
+function exportLeads() {
+    const leads = JSON.parse(localStorage.getItem(LEAD_CONFIG.storageKey) || '[]');
+    
+    if (leads.length === 0) {
+        alert('No leads to export');
+        return;
+    }
+    
+    const headers = ['Email', 'First Name', 'Last Name', 'Result', 'Score', 'Date', 'Synced'];
+    const rows = leads.map(lead => [
+        lead.email,
+        lead.first_name,
+        lead.last_name,
+        lead.result,
+        lead.score,
+        lead.date,
+        lead.synced ? 'Yes' : 'No'
+    ]);
+    
+    const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `quiz-leads-${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+    
+    console.log(`Exported ${leads.length} leads`);
 }
 
 // Quiz Logic
@@ -359,11 +432,11 @@ function showResult() {
         resultDiv.classList.add('active');
     }
     
-    // Send to GlobalControl
+    // Send lead
     const nameInput = document.getElementById('name');
     const emailInput = document.getElementById('email');
     if (emailInput && emailInput.value.trim()) {
-        sendLeadToGlobalControl({
+        sendLead({
             name: nameInput.value,
             email: emailInput.value,
             resultId: resultId,
