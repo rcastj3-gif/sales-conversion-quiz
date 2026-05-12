@@ -230,10 +230,6 @@
             <p>Here are some articles that might help you understand your challenges better.</p>
         </div>
         
-        <div style="margin-top: 30px; text-align: center;">
-            <button onclick="exportLeads()" style="background: #28a745; font-size: 14px; padding: 10px 20px;">Export All Leads (CSV)</button>
-        </div>
-        
         <div class="disclaimer">
             Built by Reyes Castillo | Sales Conversion System
         </div>
@@ -447,13 +443,23 @@ function showResult() {
     console.log('Quiz completed:', { score: totalScore, action: userAction, result: resultId });
 }
 
-// Event listeners
-document.querySelectorAll('.option').forEach(option => {
-    option.addEventListener('click', function() {
-        const qNum = parseInt(this.closest('.question').getAttribute('data-q'));
-        const value = this.getAttribute('data-value');
-        const score = parseInt(this.getAttribute('data-score') || 0);
-        const action = this.getAttribute('data-action');
+// Event listeners - attach to document for dynamic elements
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('option')) {
+        const option = e.target;
+        const question = option.closest('.question');
+        
+        if (!question) {
+            console.error('Could not find parent question');
+            return;
+        }
+        
+        const qNum = parseInt(question.getAttribute('data-q'));
+        const value = option.getAttribute('data-value');
+        const score = parseInt(option.getAttribute('data-score') || 0);
+        const action = option.getAttribute('data-action');
+        
+        console.log('Clicked option:', { qNum, value, score, action });
         
         // Store answer and score
         answers[qNum] = value;
@@ -476,7 +482,7 @@ document.querySelectorAll('.option').forEach(option => {
         } else {
             showResult();
         }
-    });
+    }
 });
 
 // Initialize
