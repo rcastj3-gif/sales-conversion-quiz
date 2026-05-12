@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Your Sales Conversion Fracture</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 { font-size: 32px; margin-bottom: 10px; color: #2c3e50; }
+        .subtitle { color: #666; font-size: 18px; margin-bottom: 30px; }
+        .progress-bar {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #667eea;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .question { display: none; }
+        .question.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .question h3 { font-size: 22px; margin-bottom: 20px; color: #2c3e50; }
+        .option { 
+            display: block;
+            padding: 18px;
+            margin: 12px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        .option:hover { 
+            background: #e9ecef;
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+        input { 
+            width: 100%; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border: 2px solid #ddd; 
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+        }
+        input:focus { border-color: #667eea; outline: none; }
+        button {
+            width: 100%;
+            padding: 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+        button:hover { background: #5a6fd6; }
+        .result { display: none; padding: 30px; background: #f8f9fa; border-radius: 12px; margin-top: 20px; }
+        .result.active { display: block; animation: fadeIn 0.5s; }
+        .result h2 { color: #2c3e50; margin-bottom: 20px; font-size: 26px; }
+        .result-section { margin: 20px 0; }
+        .result-section h3 { color: #667eea; margin-bottom: 10px; font-size: 18px; }
+        .result-section ul { margin-left: 20px; }
+        .result-section li { margin: 8px 0; color: #555; }
+        .cta-button {
+            display: block;
+            padding: 18px 30px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 25px;
+            transition: background 0.2s;
+        }
+        .cta-button:hover { background: #5a6fd6; }
+        .disclaimer {
+            text-align: center;
+            margin-top: 30px;
+            color: #999;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Find Your Sales Conversion Fracture</h1>
+            <p class="subtitle">90-second diagnostic. Personalized result.</p>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress"></div>
+        </div>
+        
+        <div id="quiz-container">
+
+        <div class="question" data-q="1">
+            <h3>Q1: What's your biggest challenge with sales conversion?</h3>
+            <div class="option" data-value="A" data-fracture="fracture-discovery">Rushing to pitch</div>
+            <div class="option" data-value="B" data-fracture="fracture-objection">Price resistance</div>
+            <div class="option" data-value="C" data-fracture="fracture-followup">Leads going cold</div>
+        </div>
+        <div class="question" data-q="2">
+            <h3>Q2: What else are you experiencing?</h3>
+            <div class="option" data-value="A" data-fracture="fracture-discovery">Not understanding pain</div>
+            <div class="option" data-value="B" data-fracture="fracture-objection">Need to think about it</div>
+            <div class="option" data-value="C" data-fracture="fracture-followup">No system</div>
+        </div>
+        <div class="question" data-q="3">
+            <h3>Q3: What's this costing you?</h3>
+            <div class="option" data-value="A" data-fracture="fracture-discovery">empty pipeline - direct loss</div>
+            <div class="option" data-value="B" data-fracture="fracture-objection">price resistance - opportunity cost</div>
+            <div class="option" data-value="C" data-fracture="fracture-followup">Confidence and momentum</div>
+        </div>
+        </div>
+        
+
+        <div id="fracture-discovery" class="result">
+            <h2>Your Fracture: Discovery Fracture</h2>
+            <div class="result-section">
+                <h3>The Symptoms</h3>
+                <ul>
+                    <li>Rushing to pitch</li>
+                    <li>Not understanding pain</li>
+                    <li>One-call closes failing</li>
+                </ul>
+            </div>
+            <a href="https://calendly.com/reyescastillo/sales-diagnostic" class="cta-button">Book Your Sales Conversion System — $3497</a>
+        </div>
+        <div id="fracture-objection" class="result">
+            <h2>Your Fracture: Objection Fracture</h2>
+            <div class="result-section">
+                <h3>The Symptoms</h3>
+                <ul>
+                    <li>Price resistance</li>
+                    <li>Need to think about it</li>
+                    <li>Ghosting after calls</li>
+                </ul>
+            </div>
+            <a href="https://calendly.com/reyescastillo/sales-diagnostic" class="cta-button">Book Your Sales Conversion System — $3497</a>
+        </div>
+        <div id="fracture-followup" class="result">
+            <h2>Your Fracture: Follow-up Fracture</h2>
+            <div class="result-section">
+                <h3>The Symptoms</h3>
+                <ul>
+                    <li>Leads going cold</li>
+                    <li>No system</li>
+                    <li>Inconsistent outreach</li>
+                </ul>
+            </div>
+            <a href="https://calendly.com/reyescastillo/sales-diagnostic" class="cta-button">Book Your Sales Conversion System — $3497</a>
+        </div>
+        
+        <div class="disclaimer">
+            Built by Reyes Castillo | Sales Conversion System
+        </div>
+    </div>
+    
+    <script>
+// GlobalControl Integration
+const GC_CONFIG = {
+    apiKey: '4a9d594f41b0ece313220086fb44996c096fe196f6c3c97c9d71f58d940dc5c6',
+    apiUrl: 'https://app.globalcontrol.com/api/v1',
+    quizName: 'sales_conversion'
+};
+
+const TAG_MAPPING = {
+        'fracture-discovery': ['quiz-taken', 'fracture-discovery', 'quiz-lead-warm'],
+        'fracture-objection': ['quiz-taken', 'fracture-objection', 'quiz-lead-warm'],
+        'fracture-followup': ['quiz-taken', 'fracture-followup', 'quiz-lead-warm']
+};
+
+async function sendLeadToGlobalControl(leadData) {
+    const { name, email, resultId } = leadData;
+    const [firstName, ...lastParts] = name.split(' ');
+    const tags = TAG_MAPPING[resultId] || ['quiz-taken', 'quiz-lead-warm'];
+    
+    const payload = {
+        email: email,
+        first_name: firstName,
+        last_name: lastParts.join(' ') || '',
+        tags: tags,
+        custom_fields: {
+            quiz_name: GC_CONFIG.quizName,
+            quiz_result: resultId,
+            quiz_date: new Date().toISOString()
+        }
+    };
+    
+    try {
+        const response = await fetch(`${GC_CONFIG.apiUrl}/contacts`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${GC_CONFIG.apiKey}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+        
+        if (response.ok) {
+            console.log('✓ Lead sent to GlobalControl');
+            return { success: true };
+        } else {
+            console.error('Failed to send lead:', response.status);
+            return { success: false };
+        }
+    } catch(error) {
+        console.error('Error:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+// Quiz Logic
+let answers = {};
+let currentQuestion = 1;
+const totalQuestions = 3;
+
+function updateProgress() {
+    const progress = ((currentQuestion - 1) / totalQuestions) * 100;
+    document.getElementById('progress').style.width = progress + '%';
+}
+
+function showQuestion(num) {
+    document.querySelectorAll('.question').forEach(q => q.classList.remove('active'));
+    const question = document.querySelector(`[data-q="${num}"]`);
+    if (question) {
+        question.classList.add('active');
+        updateProgress();
+    }
+}
+
+function nextQuestion() {
+    const nameInput = document.getElementById('name');
+    if (nameInput && nameInput.value.trim()) {
+        currentQuestion++;
+        showQuestion(currentQuestion);
+    }
+}
+
+function showResult() {
+    const emailInput = document.getElementById('email');
+    const nameInput = document.getElementById('name');
+    
+    if (!emailInput || !emailInput.value.trim()) return;
+    
+    // Hide all questions
+    document.querySelectorAll('.question').forEach(q => q.classList.remove('active'));
+    document.getElementById('progress').style.width = '100%';
+    
+    // Calculate result
+    const counts = {};
+    Object.values(answers).forEach(fracture => {
+        counts[fracture] = (counts[fracture] || 0) + 1;
+    });
+    
+    let maxCount = 0;
+    let resultSlug = '';
+    for (const [slug, count] of Object.entries(counts)) {
+        if (count > maxCount) {
+            maxCount = count;
+            resultSlug = slug;
+        }
+    }
+    
+    // Show result
+    const resultDiv = document.getElementById(resultSlug);
+    if (resultDiv) {
+        resultDiv.classList.add('active');
+    }
+    
+    // Send to GlobalControl
+    sendLeadToGlobalControl({
+        name: nameInput ? nameInput.value : 'Anonymous',
+        email: emailInput.value,
+        resultId: resultSlug
+    });
+    
+    console.log('Quiz completed:', { result: resultSlug, answers: answers });
+}
+
+// Event listeners
+document.querySelectorAll('.option').forEach(option => {
+    option.addEventListener('click', function() {
+        const value = this.getAttribute('data-value');
+        const fracture = this.getAttribute('data-fracture');
+        answers[value] = fracture;
+        
+        if (currentQuestion < totalQuestions) {
+            currentQuestion++;
+            showQuestion(currentQuestion);
+        }
+    });
+});
+
+// Initialize
+showQuestion(1);
+    </script>
+</body>
+</html>
