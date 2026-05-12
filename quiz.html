@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Find Your Sales Conversion Fracture</title>
+    <title>The Sales Conversion Diagnostic</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -22,8 +22,8 @@
             border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
-        h1 { font-size: 32px; margin-bottom: 10px; color: #2c3e50; }
-        .subtitle { color: #666; font-size: 18px; margin-bottom: 30px; }
+        h1 { font-size: 28px; margin-bottom: 5px; color: #2c3e50; }
+        .subtitle { color: #666; font-size: 16px; margin-bottom: 10px; }
         .progress-bar {
             height: 6px;
             background: #e0e0e0;
@@ -40,11 +40,19 @@
         .question { display: none; }
         .question.active { display: block; animation: fadeIn 0.3s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .question h3 { font-size: 22px; margin-bottom: 20px; color: #2c3e50; }
+        .question h3 { font-size: 20px; margin-bottom: 20px; color: #2c3e50; }
+        .tier-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
         .option { 
             display: block;
-            padding: 18px;
-            margin: 12px 0;
+            padding: 16px;
+            margin: 10px 0;
             background: #f8f9fa;
             border-radius: 8px;
             cursor: pointer;
@@ -63,7 +71,6 @@
             border: 2px solid #ddd; 
             border-radius: 8px;
             font-size: 16px;
-            font-family: inherit;
         }
         input:focus { border-color: #667eea; outline: none; }
         button {
@@ -77,19 +84,15 @@
             font-weight: bold;
             cursor: pointer;
             margin-top: 15px;
-            transition: background 0.2s;
         }
         button:hover { background: #5a6fd6; }
         .result { display: none; padding: 30px; background: #f8f9fa; border-radius: 12px; margin-top: 20px; }
-        .result.active { display: block; animation: fadeIn 0.5s; }
-        .result h2 { color: #2c3e50; margin-bottom: 20px; font-size: 26px; }
-        .result-section { margin: 20px 0; }
-        .result-section h3 { color: #667eea; margin-bottom: 10px; font-size: 18px; }
-        .result-section ul { margin-left: 20px; }
-        .result-section li { margin: 8px 0; color: #555; }
+        .result.active { display: block; }
+        .result h2 { color: #2c3e50; margin-bottom: 15px; }
+        .score-display { font-size: 48px; color: #667eea; text-align: center; margin: 20px 0; }
         .cta-button {
             display: block;
-            padding: 18px 30px;
+            padding: 18px;
             background: #667eea;
             color: white;
             text-decoration: none;
@@ -97,23 +100,16 @@
             text-align: center;
             font-size: 18px;
             font-weight: bold;
-            margin-top: 25px;
-            transition: background 0.2s;
+            margin-top: 20px;
         }
-        .cta-button:hover { background: #5a6fd6; }
-        .disclaimer {
-            text-align: center;
-            margin-top: 30px;
-            color: #999;
-            font-size: 14px;
-        }
+        .disclaimer { text-align: center; margin-top: 30px; color: #999; font-size: 14px; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Find Your Sales Conversion Fracture</h1>
-            <p class="subtitle">90-second diagnostic. Personalized result.</p>
+            <h1>The Sales Conversion Diagnostic</h1>
+            <p class="subtitle">10 questions. 3 minutes. Personalized assessment.</p>
         </div>
         
         <div class="progress-bar">
@@ -121,85 +117,117 @@
         </div>
         
         <div id="quiz-container">
-
-        <div class="question active" data-q="1">
-            <h3>Q1: What's your biggest challenge with sales conversion?</h3>
-            <div class="option" data-value="A" data-fracture="fracture-discovery">Rushing to pitch</div>
-            <div class="option" data-value="B" data-fracture="fracture-objection">Price resistance</div>
-            <div class="option" data-value="C" data-fracture="fracture-followup">Leads going cold</div>
-        </div>
-        <div class="question" data-q="2">
-            <h3>Q2: What else are you experiencing?</h3>
-            <div class="option" data-value="A" data-fracture="fracture-discovery">Not understanding pain</div>
-            <div class="option" data-value="B" data-fracture="fracture-objection">Need to think about it</div>
-            <div class="option" data-value="C" data-fracture="fracture-followup">No system</div>
-        </div>
-        <div class="question" data-q="3">
-            <h3>Q3: What's this costing you right now?</h3>
-            <div class="option" data-value="A" data-fracture="fracture-discovery">empty pipeline - direct revenue loss</div>
-            <div class="option" data-value="B" data-fracture="fracture-objection">price resistance - missed opportunities</div>
-            <div class="option" data-value="C" data-fracture="fracture-followup">Sleepless nights and stress</div>
-        </div>
-        <div class="question" data-q="4">
-            <h3>Q4: What have you already tried?</h3>
-            <div class="option" data-value="A" data-fracture="fracture-discovery">Courses and templates - still rushing to pitch</div>
-            <div class="option" data-value="B" data-fracture="fracture-objection">Hiring help - still price resistance</div>
-            <div class="option" data-value="C" data-fracture="fracture-followup">Doing it myself - still leads going cold</div>
-        </div>
-        <div class="question" data-q="5">
-            <h3>Q5: If this continues for 6 months, what happens?</h3>
-            <div class="option" data-value="A" data-fracture="fracture-discovery">I'll have to get a job or close down</div>
-            <div class="option" data-value="B" data-fracture="fracture-objection">I'll burn out and quit</div>
-            <div class="option" data-value="C" data-fracture="fracture-followup">I'll miss my goals again</div>
-        </div>
-        <div class="question" data-q="6">
-            <h3>What's your first name?</h3>
-            <input type="text" id="name" placeholder="First name">
-            <button onclick="nextQuestion()">Continue</button>
-        </div>
-        <div class="question" data-q="7">
-            <h3>Where should I send your personalized result?</h3>
-            <input type="email" id="email" placeholder="your@email.com">
-            <button onclick="showResult()">Get My Result</button>
-        </div>
+            <!-- Tier 1: Pattern Interrupt -->
+            <div class="question active" data-q="1" data-tier="1">
+                <div class="tier-label">Question 1 of 10</div>
+                <h3>What's your biggest challenge with sales conversion?</h3>
+                <div class="option" data-value="A" data-fracture="fracture-discovery" data-score="0">Rushing to pitch without understanding pain</div>
+                <div class="option" data-value="B" data-fracture="fracture-objection" data-score="0">Price resistance on every call</div>
+                <div class="option" data-value="C" data-fracture="fracture-followup" data-score="0">Leads going cold after first contact</div>
+            </div>
+            
+            <div class="question" data-q="2" data-tier="1">
+                <div class="tier-label">Question 2 of 10</div>
+                <h3>How long have you been dealing with this?</h3>
+                <div class="option" data-value="A" data-score="2">Less than 6 months</div>
+                <div class="option" data-value="B" data-score="5">6-12 months</div>
+                <div class="option" data-value="C" data-score="8">Over a year</div>
+            </div>
+            
+            <!-- Tier 2: Pain Intensification -->
+            <div class="question" data-q="3" data-tier="2">
+                <div class="tier-label">Question 3 of 10</div>
+                <h3>What's this costing you monthly in lost revenue?</h3>
+                <div class="option" data-value="A" data-score="2">Under $1,000</div>
+                <div class="option" data-value="B" data-score="5">$1,000 - $5,000</div>
+                <div class="option" data-value="C" data-score="10">Over $5,000</div>
+            </div>
+            
+            <div class="question" data-q="4" data-tier="2">
+                <div class="tier-label">Question 4 of 10</div>
+                <h3>What have you already tried to fix this?</h3>
+                <div class="option" data-value="A" data-score="3">Free content and DIY</div>
+                <div class="option" data-value="B" data-score="5">Courses and templates</div>
+                <div class="option" data-value="C" data-score="8">Hired help - still stuck</div>
+            </div>
+            
+            <div class="question" data-q="5" data-tier="2">
+                <div class="tier-label">Question 5 of 10</div>
+                <h3>If nothing changes in 6 months, what happens?</h3>
+                <div class="option" data-value="A" data-score="2">I'll figure it out eventually</div>
+                <div class="option" data-value="B" data-score="5">I'll have to make major changes</div>
+                <div class="option" data-value="C" data-score="10">Business/personal disaster</div>
+            </div>
+            
+            <!-- Tier 3: Commitment Checkpoint -->
+            <div class="question" data-q="6" data-tier="3">
+                <div class="tier-label">Checkpoint</div>
+                <h3>Are you ready to invest time and money to fix this in the next 30 days?</h3>
+                <div class="option" data-value="committed" data-action="continue" data-score="15">Yes, I'm committed</div>
+                <div class="option" data-value="exploring" data-action="nurture" data-score="5">Maybe, still exploring</div>
+                <div class="option" data-value="curious" data-action="content" data-score="0">No, just curious</div>
+            </div>
+            
+            <!-- Tier 4: Qualification (only for committed) -->
+            <div class="question" data-q="7" data-tier="4">
+                <div class="tier-label">Question 7 of 10</div>
+                <h3>What's your current monthly revenue?</h3>
+                <div class="option" data-value="low" data-tag="cold">Under $5,000</div>
+                <div class="option" data-value="medium" data-tag="warm">$5,000 - $20,000</div>
+                <div class="option" data-value="high" data-tag="hot">Over $20,000</div>
+            </div>
+            
+            <div class="question" data-q="8" data-tier="4">
+                <div class="tier-label">Question 8 of 10</div>
+                <h3>What's your comfort level for investment in solving this?</h3>
+                <div class="option" data-value="low" data-tag="cold">Under $1,000</div>
+                <div class="option" data-value="medium" data-tag="warm">$1,000 - $5,000</div>
+                <div class="option" data-value="high" data-tag="hot">$5,000+</div>
+            </div>
+            
+            <!-- Tier 5: Identity Capture -->
+            <div class="question" data-q="9" data-tier="5">
+                <div class="tier-label">Almost there</div>
+                <h3>What's your first name?</h3>
+                <input type="text" id="name" placeholder="First name">
+                <button onclick="nextQuestion()">Continue</button>
+            </div>
+            
+            <div class="question" data-q="10" data-tier="5">
+                <div class="tier-label">Final step</div>
+                <h3>What's your best email for your personalized diagnostic?</h3>
+                <input type="email" id="email" placeholder="your@email.com">
+                <button onclick="showResult()">Get My Result</button>
+            </div>
         </div>
         
-
-        <div id="fracture-discovery" class="result">
-            <h2>Your Fracture: Discovery Fracture</h2>
-            <div class="result-section">
-                <h3>The Symptoms</h3>
-                <ul>
-                    <li>Rushing to pitch</li>
-                    <li>Not understanding pain</li>
-                    <li>One-call closes failing</li>
-                </ul>
-            </div>
-            <a href="https://calendly.com/reyescastillo/sales-diagnostic" class="cta-button">Book Your Sales Conversion System — $3497</a>
+        <!-- Results -->
+        <div id="result-hot" class="result">
+            <h2>🔥 Hot Lead - Priority Follow-up</h2>
+            <div class="score-display" id="score-hot"></div>
+            <p>Your diagnostic shows high intent and readiness. You qualify for a direct strategy call.</p>
+            <a href="https://calendly.com/reyescastillo/sales-diagnostic" class="cta-button">Book Your Strategy Call - $3,497</a>
         </div>
-        <div id="fracture-objection" class="result">
-            <h2>Your Fracture: Objection Fracture</h2>
-            <div class="result-section">
-                <h3>The Symptoms</h3>
-                <ul>
-                    <li>Price resistance</li>
-                    <li>Need to think about it</li>
-                    <li>Ghosting after calls</li>
-                </ul>
-            </div>
-            <a href="https://calendly.com/reyescastillo/sales-diagnostic" class="cta-button">Book Your Sales Conversion System — $3497</a>
+        
+        <div id="result-warm" class="result">
+            <h2>⚡ Warm Lead - Nurture Sequence</h2>
+            <div class="score-display" id="score-warm"></div>
+            <p>You're interested but need more information. Check your email for valuable resources.</p>
         </div>
-        <div id="fracture-followup" class="result">
-            <h2>Your Fracture: Follow-up Fracture</h2>
-            <div class="result-section">
-                <h3>The Symptoms</h3>
-                <ul>
-                    <li>Leads going cold</li>
-                    <li>No system</li>
-                    <li>Inconsistent outreach</li>
-                </ul>
-            </div>
-            <a href="https://calendly.com/reyescastillo/sales-diagnostic" class="cta-button">Book Your Sales Conversion System — $3497</a>
+        
+        <div id="result-cold" class="result">
+            <h2>📚 Content Recommendation</h2>
+            <p>Based on your responses, here are some free resources to help you get started.</p>
+        </div>
+        
+        <div id="result-nurture" class="result">
+            <h2>📧 Stay Connected</h2>
+            <p>Thanks for your interest! You'll receive valuable content to help with your challenges.</p>
+        </div>
+        
+        <div id="result-content" class="result">
+            <h2>📖 Free Resources</h2>
+            <p>Here are some articles that might help you understand your challenges better.</p>
         </div>
         
         <div class="disclaimer">
@@ -208,63 +236,12 @@
     </div>
     
     <script>
-// GlobalControl Integration
-const GC_CONFIG = {
-    apiKey: '4a9d594f41b0ece313220086fb44996c096fe196f6c3c97c9d71f58d940dc5c6',
-    apiUrl: 'https://app.globalcontrol.com/api/v1',
-    quizName: 'sales_conversion'
-};
-
-const TAG_MAPPING = {
-        'fracture-discovery': ['quiz-taken', 'fracture-discovery', 'quiz-lead-warm'],
-        'fracture-objection': ['quiz-taken', 'fracture-objection', 'quiz-lead-warm'],
-        'fracture-followup': ['quiz-taken', 'fracture-followup', 'quiz-lead-warm']
-};
-
-async function sendLeadToGlobalControl(leadData) {
-    const { name, email, resultId } = leadData;
-    const [firstName, ...lastParts] = name.split(' ');
-    const tags = TAG_MAPPING[resultId] || ['quiz-taken', 'quiz-lead-warm'];
-    
-    const payload = {
-        email: email,
-        first_name: firstName,
-        last_name: lastParts.join(' ') || '',
-        tags: tags,
-        custom_fields: {
-            quiz_name: GC_CONFIG.quizName,
-            quiz_result: resultId,
-            quiz_date: new Date().toISOString()
-        }
-    };
-    
-    try {
-        const response = await fetch(`${GC_CONFIG.apiUrl}/contacts`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${GC_CONFIG.apiKey}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        });
-        
-        if (response.ok) {
-            console.log('✓ Lead sent to GlobalControl');
-            return { success: true };
-        } else {
-            console.error('Failed to send lead:', response.status);
-            return { success: false };
-        }
-    } catch(error) {
-        console.error('Error:', error);
-        return { success: false, error: error.message };
-    }
-}
-
 // Quiz Logic
 let answers = {};
+let scores = {};
 let currentQuestion = 1;
-const totalQuestions = 7;
+const totalQuestions = 10;
+let userAction = 'continue'; // continue, nurture, content
 
 function updateProgress() {
     const progress = ((currentQuestion - 1) / totalQuestions) * 100;
@@ -290,57 +267,67 @@ function nextQuestion() {
 
 function showResult() {
     const emailInput = document.getElementById('email');
-    const nameInput = document.getElementById('name');
+    if (!emailInput || !emailInput.value.trim()) return;
     
     // Hide all questions
     document.querySelectorAll('.question').forEach(q => q.classList.remove('active'));
     document.getElementById('progress').style.width = '100%';
     
-    // Calculate result
-    const counts = {};
-    Object.values(answers).forEach(fracture => {
-        counts[fracture] = (counts[fracture] || 0) + 1;
-    });
+    // Calculate total score
+    let totalScore = Object.values(scores).reduce((a, b) => a + b, 0);
     
-    let maxCount = 0;
-    let resultSlug = '';
-    for (const [slug, count] of Object.entries(counts)) {
-        if (count > maxCount) {
-            maxCount = count;
-            resultSlug = slug;
-        }
+    // Determine result based on action and score
+    let resultId = '';
+    if (userAction === 'content') {
+        resultId = 'result-content';
+    } else if (userAction === 'nurture') {
+        resultId = 'result-nurture';
+    } else if (totalScore >= 25) {
+        resultId = 'result-hot';
+        document.getElementById('score-hot').textContent = totalScore + ' points';
+    } else if (totalScore >= 15) {
+        resultId = 'result-warm';
+        document.getElementById('score-warm').textContent = totalScore + ' points';
+    } else {
+        resultId = 'result-cold';
     }
     
     // Show result
-    const resultDiv = document.getElementById(resultSlug);
+    const resultDiv = document.getElementById(resultId);
     if (resultDiv) {
         resultDiv.classList.add('active');
     }
     
-    // Send to GlobalControl if we have email
-    if (emailInput && emailInput.value.trim()) {
-        sendLeadToGlobalControl({
-            name: nameInput ? nameInput.value : 'Anonymous',
-            email: emailInput.value,
-            resultId: resultSlug
-        });
-    }
-    
-    console.log('Quiz completed:', { result: resultSlug, answers: answers });
+    console.log('Quiz completed:', { score: totalScore, action: userAction, result: resultId });
 }
 
 // Event listeners
 document.querySelectorAll('.option').forEach(option => {
     option.addEventListener('click', function() {
+        const qNum = parseInt(this.closest('.question').getAttribute('data-q'));
         const value = this.getAttribute('data-value');
-        const fracture = this.getAttribute('data-fracture');
-        answers[value] = fracture;
+        const score = parseInt(this.getAttribute('data-score') || 0);
+        const action = this.getAttribute('data-action');
         
+        // Store answer and score
+        answers[qNum] = value;
+        if (score) scores[qNum] = score;
+        
+        // Handle checkpoint action
+        if (action) {
+            userAction = action;
+            if (action === 'content' || action === 'nurture') {
+                // Skip to result for non-committed users
+                showResult();
+                return;
+            }
+        }
+        
+        // Progress to next question
         if (currentQuestion < totalQuestions) {
             currentQuestion++;
             showQuestion(currentQuestion);
         } else {
-            // Last question answered - show result
             showResult();
         }
     });
