@@ -270,8 +270,6 @@ function showResult() {
     const emailInput = document.getElementById('email');
     const nameInput = document.getElementById('name');
     
-    if (!emailInput || !emailInput.value.trim()) return;
-    
     // Hide all questions
     document.querySelectorAll('.question').forEach(q => q.classList.remove('active'));
     document.getElementById('progress').style.width = '100%';
@@ -297,12 +295,14 @@ function showResult() {
         resultDiv.classList.add('active');
     }
     
-    // Send to GlobalControl
-    sendLeadToGlobalControl({
-        name: nameInput ? nameInput.value : 'Anonymous',
-        email: emailInput.value,
-        resultId: resultSlug
-    });
+    // Send to GlobalControl if we have email
+    if (emailInput && emailInput.value.trim()) {
+        sendLeadToGlobalControl({
+            name: nameInput ? nameInput.value : 'Anonymous',
+            email: emailInput.value,
+            resultId: resultSlug
+        });
+    }
     
     console.log('Quiz completed:', { result: resultSlug, answers: answers });
 }
