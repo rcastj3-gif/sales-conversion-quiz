@@ -236,6 +236,53 @@
     </div>
     
     <script>
+// GlobalControl Integration
+const GC_CONFIG = {
+    apiKey: '4a9d594f41b0ece313220086fb44996c096fe196f6c3c97c9d71f58d940dc5c6',
+    apiUrl: 'https://app.globalcontrol.com/api/v1',
+    quizName: 'sales_conversion'
+};
+
+async function sendLeadToGlobalControl(leadData) {
+    const { name, email, resultId, score } = leadData;
+    const [firstName, ...lastParts] = name.split(' ');
+    
+    const payload = {
+        email: email,
+        first_name: firstName,
+        last_name: lastParts.join(' ') || '',
+        tags: ['quiz-taken', resultId, 'quiz-lead-warm'],
+        custom_fields: {
+            quiz_name: GC_CONFIG.quizName,
+            quiz_result: resultId,
+            quiz_score: score,
+            quiz_date: new Date().toISOString()
+        }
+    };
+    
+    try {
+        const response = await fetch(`${GC_CONFIG.apiUrl}/contacts`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${GC_CONFIG.apiKey}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+        
+        if (response.ok) {
+            console.log('✓ Lead sent to GlobalControl');
+            return { success: true };
+        } else {
+            console.error('Failed to send lead:', response.status);
+            return { success: false };
+        }
+    } catch(error) {
+        console.error('Error:', error);
+        return { success: false, error: error.message };
+    }
+}
+
 // Quiz Logic
 let answers = {};
 let scores = {};
@@ -296,6 +343,18 @@ function showResult() {
     const resultDiv = document.getElementById(resultId);
     if (resultDiv) {
         resultDiv.classList.add('active');
+    }
+    
+    // Send to GlobalControl
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    if (emailInput && emailInput.value.trim()) {
+        sendLeadToGlobalControl({
+            name: nameInput.value,
+            email: emailInput.value,
+            resultId: resultId,
+            score: totalScore
+        });
     }
     
     console.log('Quiz completed:', { score: totalScore, action: userAction, result: resultId });
