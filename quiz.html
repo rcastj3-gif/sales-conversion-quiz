@@ -238,7 +238,7 @@
     <script>
 // GlobalControl Integration
 const GC_CONFIG = {
-    apiKey: '4a9d594f41b0ece313220086fb44996c096fe196f6c3c97c9d71f58d940dc5c6',
+    apiKey: '732716848f927cfaf4399bc92e4ecdd3dac1a020a92cf366fb26d3ae7f990825',
     apiUrl: 'https://app.globalcontrol.com/api/v1',
     quizName: 'sales_conversion'
 };
@@ -275,12 +275,26 @@ async function sendLeadToGlobalControl(leadData) {
             return { success: true };
         } else {
             console.error('Failed to send lead:', response.status);
-            return { success: false };
+            // Store locally as fallback
+            storeLeadLocally(payload);
+            return { success: false, stored: true };
         }
     } catch(error) {
         console.error('Error:', error);
-        return { success: false, error: error.message };
+        // Store locally as fallback
+        storeLeadLocally(payload);
+        return { success: false, error: error.message, stored: true };
     }
+}
+
+function storeLeadLocally(leadData) {
+    const pending = JSON.parse(localStorage.getItem('gc_pending_leads') || '[]');
+    pending.push({
+        ...leadData,
+        stored_at: new Date().toISOString()
+    });
+    localStorage.setItem('gc_pending_leads', JSON.stringify(pending));
+    console.log('Lead stored locally for later sync');
 }
 
 // Quiz Logic
