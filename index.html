@@ -325,51 +325,50 @@ function showResult() {
     html += `<h2>${resultTitle}</h2>`;
     html += `<p>Score: ${totalScore} points</p>`;
     html += `<p>${resultText}</p>`;
-    
+
     if (resultType === 'hot') {
         html += `<a href="https://calendly.com/reyescastillo/sales-diagnostic" class="cta-button">Book Your Strategy Call - $3,497</a>`;
     }
-    
+
     html += `</div>`;
     container.innerHTML = html;
-    
+
     // Store lead (async)
-    storeLead(resultType).catch(err => console.error('Store lead error:', err));
+    storeLead(resultType, resultTitle, resultText).catch(err => console.error('Store lead error:', err));
 }
 
-// GlobalControl Integration
-const GC_CONFIG = {
-    apiKey: '732716848f927cfaf4399bc92e4ecdd3dac1a020a92cf366fb26d3ae7f990825',
-    apiUrl: 'https://api.globalcontrol.io/api/ai'
+// Supabase Integration
+const SUPABASE_CONFIG = {
+    url: 'https://qrudzrbueqcjprgyfvsq.supabase.co',
+    submitPath: '/functions/v1/sales-quiz-submit'
 };
 
-async function sendToGlobalControl(leadData) {
+async function sendToSupabase(leadData) {
     const payload = {
+        first_name: leadData.name,
         email: leadData.email,
-        firstName: leadData.name.split(' ')[0],
-        lastName: leadData.name.split(' ').slice(1).join(' ') || '',
-        customFields: {
-            quiz_result: leadData.result,
-            quiz_score: leadData.score,
-            quiz_date: leadData.date
-        }
+        primary_result: leadData.result,
+        score: leadData.score,
+        answers: answers.filter(a => !a.field),
+        result_title: leadData.resultTitle,
+        result_text: leadData.resultText,
+        page_url: window.location.href
     };
-    
+
     try {
-        const response = await fetch(`${GC_CONFIG.apiUrl}/contacts`, {
+        const response = await fetch(`${SUPABASE_CONFIG.url}${SUPABASE_CONFIG.submitPath}`, {
             method: 'POST',
             headers: {
-                'X-API-KEY': GC_CONFIG.apiKey,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(payload)
         });
-        
+
         if (response.ok) {
-            console.log('✓ Lead sent to GlobalControl');
+            console.log('✓ Lead saved to Supabase');
             return true;
         } else {
-            console.error('GlobalControl error:', response.status);
+            console.error('Supabase submit error:', response.status);
             return false;
         }
     } catch (error) {
@@ -378,33 +377,35 @@ async function sendToGlobalControl(leadData) {
     }
 }
 
-// Store lead locally and send to GlobalControl
-async function storeLead(resultType) {
+// Store lead locally and send to Supabase
+async function storeLead(resultType, resultTitle, resultText) {
     const nameInput = answers.find(a => a.field === 'name');
     const emailInput = answers.find(a => a.field === 'email');
-    
+
     if (!emailInput || !emailInput.answer) {
         console.log('No email captured');
         return;
     }
-    
+
     const lead = {
         name: nameInput ? nameInput.answer : 'Anonymous',
         email: emailInput.answer,
         result: resultType,
+        resultTitle,
+        resultText,
         score: totalScore,
         date: new Date().toISOString()
     };
-    
-    // Send to GlobalControl
-    const gcSuccess = await sendToGlobalControl(lead);
-    
+
+    // Send to Supabase
+    const synced = await sendToSupabase(lead);
+
     // Also store locally as backup
     const leads = JSON.parse(localStorage.getItem('quiz_leads') || '[]');
-    leads.push({...lead, gc_synced: gcSuccess});
+    leads.push({...lead, synced});
     localStorage.setItem('quiz_leads', JSON.stringify(leads));
-    
-    if (gcSuccess) {
+
+    if (synced) {
         showStorageConfirmation('✓ Your result has been saved. Check your email for next steps.');
     } else {
         showStorageConfirmation('✓ Result saved. We will follow up shortly.');
